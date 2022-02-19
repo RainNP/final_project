@@ -8,6 +8,7 @@ from fastapi.encoders import jsonable_encoder
 from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
 from schema import sensor, alarm, record_model
+import time
 
 client = MongoClient('mongodb://localhost', 27017)
 
@@ -57,7 +58,6 @@ def post(sensor : sensor):
     q = {"place" : ss["place"]}
     if (sensor.s == 1) :
         time1 = datetime.now().timestamp()
-        alarm(ss["place"],0,0)
         new = {"$set" : {"time1":time1}}
         collection.update_one(q,new)
     if (sensor.s == 2) : 
@@ -92,6 +92,10 @@ def post(sensor : sensor):
             alarm(ss["place"],1,time["time3"])
             velo = collection.find_one({"place":ss["place"]},{"_id":0})
             post_rercord(ss["place"],1,velo["velo2"],time["time3"])
+            time.sleep(2)
+            alarm(ss["place"],0,0)
+
+
 
 @router.get("/alarm/get")
 def get_alarm_hard():
