@@ -19,6 +19,7 @@ class record_model(BaseModel):
     LaneNo : int
     velocity : int
     time : int
+    tick : Optional[int] = 0
 
 class Token(BaseModel):
     access_token: str

@@ -151,17 +151,16 @@ async def delete_record(record_model: record_model ,token: str = Depends(oauth2_
         "result" : "Delete complete"
     }
 
-@app.post("/record/post")
-def post_rercord(place:str,LaneNo:int,velocity:int,time:float):
-    time_int = int(time)
-    record_model1 = record_model(
-        place = place,
-        LaneNo = LaneNo,
-        velocity = velocity,
-        time = time_int
-    )
-    record_model1 = jsonable_encoder(record_model1)
-    Front_Record.insert_one(record_model1)
+@app.get("/get/speed/{place}")
+def get_speed(place:str):
+    check = place_collection.find_one({"place":place},{"_id":0,"latLng":0})
+    return check
+
+@app.put("/put/check/record")
+async def put_record(record_model: record_model ,token: str = Depends(oauth2_scheme)):
+    q = {"place":record_model.place,"LaneNo":record_model.LaneNo,"velocity":record_model.velocity,"time":record_model.time}
+    new = {"$set" : {"tick":record_model.tick}}
+    Front_Record.update_one(q,new)
     return {
-        "rusult" : "done"
+        "result" : "done"
     }

@@ -53,6 +53,7 @@ def post_rercord(place:str,LaneNo:int,velocity:float,time:float):
 
 @router.post("/sensor/post")
 def post(sensor : sensor):
+    print(sensor.s)
     ss = collection3.find_one({"sensor_no":1},{"_id":0})
     p = collection2.find_one({"place":ss["place"]},{"_id":0})
     q = {"place" : ss["place"]}
@@ -64,8 +65,8 @@ def post(sensor : sensor):
         time2 = datetime.now().timestamp()
         new = {"$set" : {"time2":time2}}
         collection.update_one(q,new)
-        time = collection.find_one({"place":ss["place"]},{"_id":0})
-        velo1 = 1/(time["time2"] - time["time1"]) * 3.6
+        time5 = collection.find_one({"place":ss["place"]},{"_id":0})
+        velo1 = 1/(time5["time2"] - time5["time1"]) * 3.6
         new = {"$set" : {"velo1":velo1}}
         collection.update_one(q,new)
         velo = collection.find_one({"place":ss["place"]},{"_id":0})
@@ -73,25 +74,25 @@ def post(sensor : sensor):
         print(p["speed_limit"])
         if (velo["velo1"] > p["speed_limit"]) : 
             print(1)
-            alarm(ss["place"],1,time["time2"])
-            post_rercord(ss["place"],1,velo["velo1"],time["time2"])
+            alarm(ss["place"],1,time5["time2"])
+            post_rercord(ss["place"],1,velo["velo1"],time5["time2"])
             new = {"$set" : {"velo1":0}}
             collection.update_one(q,new)
     velo = collection.find_one({"place":ss["place"]},{"_id":0})
-    time = collection.find_one({"place":ss["place"]},{"_id":0})
+    time5 = collection.find_one({"place":ss["place"]},{"_id":0})
     if (sensor.s == 3 and velo["velo1"] != 0): 
         time3 = datetime.now().timestamp()
         new = {"$set" : {"time3":time3},}
         collection.update_one(q,new)
         velo = collection.find_one({"place":ss["place"]},{"_id":0})
-        time = collection.find_one({"place":ss["place"]},{"_id":0})
-        velo2 = 100/(time["time3"] - time["time2"]) * 3.6
+        time5 = collection.find_one({"place":ss["place"]},{"_id":0})
+        velo2 = 100/(time5["time3"] - time5["time2"]) * 3.6
         new = {"$set" : {"velo2":velo2}}
         collection.update_one(q,new)
         if (velo["velo2"] > p["speed_limit"]/2):
-            alarm(ss["place"],1,time["time3"])
+            alarm(ss["place"],1,time5["time3"])
             velo = collection.find_one({"place":ss["place"]},{"_id":0})
-            post_rercord(ss["place"],1,velo["velo2"],time["time3"])
+            post_rercord(ss["place"],1,velo["velo2"],time5["time3"])
             time.sleep(2)
             alarm(ss["place"],0,0)
 
