@@ -78,6 +78,8 @@ def post(sensor : sensor):
             post_rercord(ss["place"],1,velo["velo1"],time5["time2"])
             new = {"$set" : {"velo1":0}}
             collection.update_one(q,new)
+            time.sleep(2)
+            alarm(ss["place"],0,0)
     velo = collection.find_one({"place":ss["place"]},{"_id":0})
     time5 = collection.find_one({"place":ss["place"]},{"_id":0})
     if (sensor.s == 3 and velo["velo1"] != 0): 
