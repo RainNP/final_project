@@ -101,5 +101,5 @@ def post(sensor : sensor):
 @router.get("/alarm/get")
 def get_alarm_hard():
     check = collection4.find_one({},{"_id":0,"alarm":1})
-    return check
+    return check["alarm"]
     
