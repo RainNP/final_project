@@ -102,4 +102,3 @@ def post(sensor : sensor):
 def get_alarm_hard():
     check = collection4.find_one({},{"_id":0,"alarm":1})
     return check["alarm"]
-    
