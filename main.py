@@ -164,3 +164,11 @@ async def put_record(record_model: record_model ,token: str = Depends(oauth2_sch
     return {
         "result" : "done"
     }
+
+@app.delete("/device/delete")
+async def delete_device(place_model: place_model ,token: str = Depends(oauth2_scheme)):
+    q = {"place":place_model.place}
+    place_collection.delete_one(q)
+    return {
+        "result" : "Delete complete"
+    }
