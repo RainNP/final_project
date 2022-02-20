@@ -78,6 +78,9 @@ def post(sensor : sensor):
             post_rercord(ss["place"],1,velo["velo1"],time5["time2"])
             new = {"$set" : {"velo1":0}}
             collection.update_one(q,new)
+            time.sleep(5)
+            alarm(ss["place"],0,0)
+            print(1)
     velo = collection.find_one({"place":ss["place"]},{"_id":0})
     time5 = collection.find_one({"place":ss["place"]},{"_id":0})
     if (sensor.s == 3 and velo["velo1"] != 0): 
@@ -93,8 +96,9 @@ def post(sensor : sensor):
             alarm(ss["place"],1,time5["time3"])
             velo = collection.find_one({"place":ss["place"]},{"_id":0})
             post_rercord(ss["place"],1,velo["velo2"],time5["time3"])
-            time.sleep(2)
+            time.sleep(5)
             alarm(ss["place"],0,0)
+            print(1)
 
 @router.get("/alarm/get")
 def get_alarm_hard():
